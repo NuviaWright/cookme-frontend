@@ -8,7 +8,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class RecipeService {
-  private url = 'http://localhost:8080/recipe/find';
+  private url = 'http://localhost:8081/recipe/find';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
