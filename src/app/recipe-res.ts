@@ -1,5 +1,5 @@
+import { Meals } from './meals';
+
 export interface RecipeRes {
-  idMeal: number;
-  strMeal: string;
-  strMealThumb: string;
+  meals: Meals[];
 }

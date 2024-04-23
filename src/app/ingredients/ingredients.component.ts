@@ -1,8 +1,9 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ingredients } from '../ingredient';
 import { RecipeService } from '../recipe.service';
+import { RecipeRes } from '../recipe-res';
 
 @Component({
   selector: 'app-ingredients',
@@ -10,12 +11,15 @@ import { RecipeService } from '../recipe.service';
   imports: [FormsModule, CommonModule],
   templateUrl: './ingredients.component.html',
   styleUrl: './ingredients.component.css',
+  // providers: [RecipeService],
 })
 export class IngredientsComponent {
   ingredients: Array<string> = [];
   ingredient = new Ingredients('');
   error = false;
   errorMessage: string = '';
+
+  @Output() recipes = new EventEmitter<any>();
 
   constructor(private recipeService: RecipeService) {}
 
@@ -24,7 +28,6 @@ export class IngredientsComponent {
 
     // const recipes = this.recipeService.recipeFind(this.ingredient.name);
     this.recipeService.fetchRecipe(this.ingredient.name).then((res) => {
-      console.log(res);
       if (res?.code == 'NG') {
         this.error = true;
         this.errorMessage = res.message;
@@ -32,8 +35,8 @@ export class IngredientsComponent {
       }
 
       this.ingredients.push(this.ingredient.name);
+      this.ingredient.name = '';
+      this.recipes.emit(res);
     });
-
-    this.ingredient.name = '';
   }
 }

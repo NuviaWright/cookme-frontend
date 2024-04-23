@@ -5,7 +5,7 @@
 </nav>
 <main class="grid grid-cols-3 ms-10">
   <div class="mt-10 col-span-3">
-    <app-ingredients></app-ingredients>
+    <app-ingredients (recipes)="onRecipes($event)"></app-ingredients>
   </div>
-  <app-recipes class="mt-10 col-span-2"></app-recipes>
+  <app-recipes class="mt-10 col-span-2" [recipesRes]="recipes"></app-recipes>
 </main>
