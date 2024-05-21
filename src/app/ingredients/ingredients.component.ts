@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ingredients } from '../ingredient';
 import { RecipeService } from '../recipe.service';
-import { RecipeRes } from '../recipe-res';
 
 @Component({
   selector: 'app-ingredients',
@@ -11,11 +10,10 @@ import { RecipeRes } from '../recipe-res';
   imports: [FormsModule, CommonModule],
   templateUrl: './ingredients.component.html',
   styleUrl: './ingredients.component.css',
-  // providers: [RecipeService],
 })
 export class IngredientsComponent {
   ingredients: Array<string> = [];
-  ingredient = new Ingredients('');
+  ingredient = new Ingredients('', '');
   error = false;
   errorMessage: string = '';
 

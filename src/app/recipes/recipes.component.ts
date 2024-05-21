@@ -23,8 +23,8 @@ export class RecipesComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['recipesRes'].isFirstChange()) return;
+
     const res = changes['recipesRes'].currentValue;
-    console.log(res.response['meals']);
     if (res.code == 'NG') {
       this.error = res.message;
       return;
