@@ -8,7 +8,8 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class RecipeService {
-  private url = 'http://127.0.0.1:8081/recipe';
+  private urlRecipe = 'http://127.0.0.1:8081/recipe';
+  private urlIngredient = 'http://127.0.0.1:8081/ingredient';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -17,20 +18,25 @@ export class RecipeService {
   constructor(private http: HttpClient) {}
 
   recipeFind(ingredient: string): Observable<RecipeSearchRes> {
-    const url = `${this.url}/${ingredient}`;
-    return this.http.get<RecipeSearchRes>(url).pipe(
+    const urlRecipe = `${this.urlRecipe}/${ingredient}`;
+    return this.http.get<RecipeSearchRes>(urlRecipe).pipe(
       tap((_) => this.log('fetched data')),
       catchError(this.handleError<RecipeSearchRes>('recipeFind'))
     );
   }
 
   async fetchRecipe(ingredient: string): Promise<RecipeSearchRes> {
-    const res = await fetch(`${this.url}/find/${ingredient}`);
+    const res = await fetch(`${this.urlRecipe}/find/${ingredient}`);
     return (await res.json()) ?? '';
   }
 
   async fetchMeal(mealId: number): Promise<RecipeSearchRes> {
-    const res = await fetch(`${this.url}/meal/${mealId}`);
+    const res = await fetch(`${this.urlRecipe}/meal/${mealId}`);
+    return (await res.json()) ?? '';
+  }
+
+  async fetchIngredient(): Promise<RecipeSearchRes> {
+    const res = await fetch(`${this.urlIngredient}/list`);
     return (await res.json()) ?? '';
   }
 
