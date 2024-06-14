@@ -24,7 +24,11 @@ export class IngredientsComponent implements OnInit {
   constructor(private recipeService: RecipeService) {}
 
   ngOnInit() {
-    this.recipeService.fetchIngredient().then((res) => {
+    this.getAllIngredients();
+  }
+
+  getAllIngredients() {
+    this.recipeService.httpIngredient().subscribe((res) => {
       if (res.code == 'NG') {
         return;
       }
@@ -38,7 +42,7 @@ export class IngredientsComponent implements OnInit {
 
     let ingredientName = this.ingredient.name.replace(' ', '_');
 
-    this.recipeService.fetchRecipe(ingredientName).then((res) => {
+    this.recipeService.httpRecipe(ingredientName).subscribe((res) => {
       if (res?.code == 'NG') {
         this.error = true;
         this.errorMessage = res.message;

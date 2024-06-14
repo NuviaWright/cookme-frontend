@@ -22,12 +22,32 @@ export class FoodComponent {
 
   ngOnInit() {
     let mealId = Number(this.route.snapshot.params['id']);
-    this.getMeals(mealId);
+    this.getHttpMeals(mealId);
   }
 
-  getMeals(mealId: number) {
+  getFetchMeals(mealId: number) {
     this.recipeService.fetchMeal(mealId).then((res) => {
       if (res?.code == 'NG') {
+        this.error = res.message;
+        return;
+      }
+
+      this.food = res?.response.meals[0];
+
+      let name, measure;
+      for (let i = 1; i <= 20; i++) {
+        name = res?.response.meals[0]['strIngredient' + i];
+        if (name == null || name == '') break;
+
+        measure = res?.response.meals[0]['strMeasure' + i];
+        this.ingredients.push(new Ingredients(name, measure));
+      }
+    });
+  }
+
+  getHttpMeals(mealId: number) {
+    this.recipeService.httpMeal(mealId).subscribe((res) => {
+      if (res.code == 'NG') {
         this.error = res.message;
         return;
       }
