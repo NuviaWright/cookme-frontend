@@ -4,6 +4,7 @@ import { RecipeService } from '../recipe.service';
 import { Food } from '../food';
 import { Ingredients } from '../ingredient';
 import { CommonModule } from '@angular/common';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-food',
@@ -52,14 +53,14 @@ export class FoodComponent {
         return;
       }
 
-      this.food = res?.response.meals[0];
+      this.food = res.response.meals[0];
 
       let name, measure;
       for (let i = 1; i <= 20; i++) {
-        name = res?.response.meals[0]['strIngredient' + i];
+        name = res.response.meals[0]['strIngredient' + i];
         if (name == null || name == '') break;
 
-        measure = res?.response.meals[0]['strMeasure' + i];
+        measure = res.response.meals[0]['strMeasure' + i];
         this.ingredients.push(new Ingredients(name, measure));
       }
     });

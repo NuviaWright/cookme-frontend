@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  AfterRenderPhase,
+  afterRender,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ingredients } from '../ingredient';
@@ -12,7 +20,7 @@ import { IngredientList } from '../ingredient-list';
   templateUrl: './ingredients.component.html',
   styleUrl: './ingredients.component.css',
 })
-export class IngredientsComponent implements OnInit {
+export class IngredientsComponent {
   ingredients: Array<string> = [];
   ingredientList: Array<IngredientList> = [];
   ingredient = new Ingredients('', '');
@@ -21,10 +29,10 @@ export class IngredientsComponent implements OnInit {
 
   @Output() recipes = new EventEmitter<any>();
 
-  constructor(private recipeService: RecipeService) {}
-
-  ngOnInit() {
-    this.getAllIngredients();
+  constructor(private recipeService: RecipeService) {
+    afterRender(() => {
+      this.getAllIngredients();
+    });
   }
 
   getAllIngredients() {
