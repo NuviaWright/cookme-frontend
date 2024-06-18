@@ -105,4 +105,9 @@ export class IngredientsComponent {
     this.ingredients = this.ingredients.slice();
     this.recipes.emit(this.ingredients);
   }
+
+  clearAll() {
+    this.ingredients = [];
+    localStorage.removeItem('cookMe_ingredients');
+  }
 }
