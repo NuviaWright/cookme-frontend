@@ -41,13 +41,14 @@ export class RecipesComponent implements OnChanges {
     // TO DO: change to multiple search
     let ingredientName = ingredient[ingredient.length - 1].replace(' ', '_');
     this.recipeService.httpRecipe(ingredientName).subscribe((res) => {
+      console.log(res);
       if (res?.code == 'NG') {
         this.error = res.message;
         return;
       }
 
       this.loading = false;
-      this.meals = res.response['meals'];
+      this.meals = res.response['meals'] != null ? res.response['meals'] : [];
     });
   }
 }
