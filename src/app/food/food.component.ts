@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {
+  ActivatedRoute,
+  RouterOutlet,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { Food } from '../food';
 import { Ingredients } from '../ingredient';
@@ -10,7 +15,7 @@ import { RecipeSearchRes } from '../recipe-search-res';
 @Component({
   selector: 'app-food',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './food.component.html',
   styleUrl: './food.component.css',
 })

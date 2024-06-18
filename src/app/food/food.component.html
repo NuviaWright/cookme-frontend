@@ -1,58 +1,67 @@
 <main class="m-10">
-  <div class="w-full">
-    <img [src]="food?.strMealThumb" class="bg-auto w-1/4" loading="lazy" />
-  </div>
+  <a [routerLink]="['/']" class="cursor-pointer underline text-blue-500"
+    >Home</a
+  >
 
-  <div>
-    <h1 class="my-3 font-bold text-lg text-pretty">{{ food?.strMeal }}</h1>
-    <div class="flex flex-row gap-20">
-      <div>
-        <span>Category: </span>
-        <span class="font-semibold">{{ food?.strCategory }}</span>
+  <div class="grid grid-cols-1 md:grid-cols-[40%_auto] md:grid-flow-col gap-5">
+    <div class="mt-5">
+      <img
+        [src]="food?.strMealThumb"
+        class="bg-auto rounded-lg"
+        loading="lazy"
+      />
+      <h1 class="my-3 font-bold text-lg text-pretty">{{ food?.strMeal }}</h1>
+      <div class="flex flex-row gap-20">
+        <div>
+          <span>Category: </span>
+          <span class="font-semibold">{{ food?.strCategory }}</span>
+        </div>
+        <div>
+          <span>Area: </span>
+          <span class="font-semibold">{{ food?.strArea }}</span>
+        </div>
       </div>
-      <div>
-        <span>Area: </span>
-        <span class="font-semibold">{{ food?.strArea }}</span>
+    </div>
+    <div>
+      <div class="mt-3">
+        <h1 class="font-semibold">Ingredients:</h1>
+        <ul
+          *ngFor="let ingredient of ingredients"
+          class="list-disc list-inside ml-1"
+        >
+          <li>
+            <span>{{ ingredient.name }}</span>
+            <span *ngIf="ingredient.measure.trim() != ''">
+              - {{ ingredient.measure }}</span
+            >
+          </li>
+        </ul>
       </div>
-    </div>
-
-    <div class="mt-3">
-      <h1 class="font-semibold">Ingredients:</h1>
-      <ul
-        *ngFor="let ingredient of ingredients"
-        class="list-disc list-inside ml-1"
-      >
-        <li>
-          <span>{{ ingredient.name }}</span> -
-          <span>{{ ingredient.measure }}</span>
-        </li>
-      </ul>
-    </div>
-
-    <h1 class="font-semibold mt-3">Instruction:</h1>
-    <p class="ml-5 whitespace-pre-line">
-      {{ food?.strInstructions }}
-    </p>
-    <div class="mt-1" *ngIf="food?.strYoutube">
-      <span class="font-semibold">Video tutorial: </span>
-      <a
-        [href]="food?.strYoutube"
-        target="_blank"
-        class="font-semibold hover:underline text-blue-400 hover:cursor-pointer"
-        >{{ food?.strYoutube }}</a
-      >
-    </div>
-
-    <div *ngIf="food?.strSource" class="mt-1">
-      <h1 class="font-semibold">
-        For more info about this recipe, check out this
+      <h1 class="font-semibold pt-10 col-span-2">Instruction:</h1>
+      <p class="ml-5 whitespace-pre-line">
+        {{ food?.strInstructions }}
+      </p>
+      <div class="mt-1" *ngIf="food?.strYoutube">
+        <span class="font-semibold">Video tutorial: </span>
         <a
-          [href]="food?.strSource"
-          class="text-blue-400 hover:cursor-pointer hover:underline"
+          [href]="food?.strYoutube"
           target="_blank"
-          >link</a
-        >.
-      </h1>
+          class="font-semibold hover:underline text-blue-400 hover:cursor-pointer"
+          >{{ food?.strYoutube }}</a
+        >
+      </div>
+
+      <div *ngIf="food?.strSource" class="mt-1">
+        <h1 class="font-semibold">
+          For more info about this recipe, check out this
+          <a
+            [href]="food?.strSource"
+            class="text-blue-400 hover:cursor-pointer hover:underline"
+            target="_blank"
+            >link</a
+          >.
+        </h1>
+      </div>
     </div>
   </div>
 </main>
