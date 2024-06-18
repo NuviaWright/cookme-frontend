@@ -1,21 +1,41 @@
-<section class="flex flex-row flex-wrap gap-2 justify-evenly border-t-2">
-  <h4 class="text-xl justify-self-start w-full pb-5 pt-3">Results:</h4>
+<section class="border-t-2 mb-6">
+  <h4
+    class="text-xl justify-self-start w-full pb-5 pt-3"
+    *ngIf="meals.length > 0"
+  >
+    Results:
+  </h4>
   <div *ngIf="error" class="mt-5 bg-red-400 text-white w-fit p-5">
     <p>{{ error }}</p>
   </div>
 
-  <!-- card -->
-  <div *ngFor="let meal of meals">
-    <a
-      [routerLink]="['food', meal.idMeal]"
-      class="rounded border border-gray-200 flex flex-col flex-wrap w-64 p-3 hover:bg-slate-100 hover:cursor-pointer"
+  <div class="mt-3">
+    <!-- loading -->
+    <div id="loading" [hidden]="!loading">
+      <div
+        class="rounded border border-gray-200 flex flex-col flex-wrap w-64 p-3 animate-pulse"
+      >
+        <img class="rounded bg-slate-500 h-44" loading="lazy" />
+        <div class="rounded mt-3 h-5 bg-slate-500" href="#"></div>
+        <div class="rounded mt-3 h-5 w-2/3 bg-slate-500" href="#"></div>
+      </div>
+    </div>
+
+    <div
+      id="recipes"
+      class="flex flex-row flex-wrap gap-2 justify-evenly"
+      [hidden]="loading"
     >
-      <img
-        class="rounded bg-slate-500 h-44"
-        [src]="meal.strMealThumb"
-        loading="lazy"
-      />
-      <h6 class="text-lg font-bold mt-3" href="#">{{ meal.strMeal }}</h6>
-    </a>
+      <!-- card -->
+      <div *ngFor="let meal of meals">
+        <a
+          [routerLink]="['food', meal.idMeal]"
+          class="rounded border border-gray-200 flex flex-col flex-wrap w-64 p-3 hover:bg-slate-100 hover:cursor-pointer h-full"
+        >
+          <img class="rounded h-44" [src]="meal.strMealThumb" loading="lazy" />
+          <h6 class="text-lg font-bold mt-3" href="#">{{ meal.strMeal }}</h6>
+        </a>
+      </div>
+    </div>
   </div>
 </section>

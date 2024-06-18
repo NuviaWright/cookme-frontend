@@ -1,4 +1,7 @@
 <form (ngSubmit)="addIngredient()" #ingredientForm="ngForm">
+  <p class="text-red-300">
+    Note: Multiple search of ingredients are not supported yet
+  </p>
   <div class="flex flex-wrap justify-start gap-2 items-baseline">
     <label for="ingredient">Ingredient: </label>
     <input
@@ -18,7 +21,7 @@
       ></option>
     </datalist>
     <button
-      class="rounded bg-slate-400 text-white ms-4 px-3 py-1"
+      class="rounded bg-slate-400 text-white ms-4 px-3 py-1 hover:text-slate-950 hover:cursor-pointer"
       type="submit"
       [disabled]="ingredient.name == ''"
     >
@@ -32,7 +35,35 @@
 </div>
 
 <div class="mt-5">
-  <ul class="list-disc list-inside" *ngFor="let ingredient of ingredients">
-    <li>{{ ingredient }}</li>
+  <ul class="flex flex-row gap-4">
+    <li
+      class="bg-orange-300 w-fit flex flex-row px-3 py-1 rounded justify-center align-middle gap-3"
+      *ngFor="let ingredient of ingredients"
+    >
+      <span class="text-slate-700">{{ ingredient }}</span>
+      <button
+        class="self-center hover:stroke-red-700"
+        (click)="removeIngredient(ingredient)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="#fbfcf8"
+          class="size-5"
+        >
+          <path
+            d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"
+          />
+        </svg>
+      </button>
+    </li>
   </ul>
+
+  <button
+    class="mt-6 bg-green-500 rounded px-3 py-1 text-white hover:text-green-950 disabled:text-white disabled:cursor-default disabled:bg-green-300"
+    (click)="search()"
+    [disabled]="ingredients.length == 0"
+  >
+    Search
+  </button>
 </div>
