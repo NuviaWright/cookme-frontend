@@ -4,7 +4,8 @@ import { RecipeService } from '../recipe.service';
 import { Food } from '../food';
 import { Ingredients } from '../ingredient';
 import { CommonModule } from '@angular/common';
-import { catchError } from 'rxjs';
+import { Observable, catchError, retry } from 'rxjs';
+import { RecipeSearchRes } from '../recipe-search-res';
 
 @Component({
   selector: 'app-food',
@@ -18,6 +19,7 @@ export class FoodComponent {
   food: Food | null = null;
   error: string | null = null;
   ingredients: Array<Ingredients> = [];
+  res!: Observable<RecipeSearchRes>;
 
   constructor(private recipeService: RecipeService) {}
 
@@ -47,22 +49,27 @@ export class FoodComponent {
   }
 
   getHttpMeals(mealId: number) {
-    this.recipeService.httpMeal(mealId).subscribe((res) => {
-      if (res.code == 'NG') {
-        this.error = res.message;
-        return;
-      }
+    this.recipeService.httpMeal(mealId).subscribe({
+      next: (res) => {
+        if (res.code == 'NG') {
+          this.error = res.message;
+          return;
+        }
 
-      this.food = res.response.meals[0];
+        this.food = res.response.meals[0];
 
-      let name, measure;
-      for (let i = 1; i <= 20; i++) {
-        name = res.response.meals[0]['strIngredient' + i];
-        if (name == null || name == '') break;
+        let name, measure;
+        for (let i = 1; i <= 20; i++) {
+          name = res.response.meals[0]['strIngredient' + i];
+          if (name == null || name == '') break;
 
-        measure = res.response.meals[0]['strMeasure' + i];
-        this.ingredients.push(new Ingredients(name, measure));
-      }
+          measure = res.response.meals[0]['strMeasure' + i];
+          this.ingredients.push(new Ingredients(name, measure));
+        }
+      },
+      error: () => {
+        retry(1);
+      },
     });
   }
 }

@@ -1,17 +1,10 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnInit,
-  AfterRenderPhase,
-  afterRender,
-} from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ingredients } from '../ingredient';
 import { RecipeService } from '../recipe.service';
 import { IngredientList } from '../ingredient-list';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-ingredients',
@@ -29,19 +22,24 @@ export class IngredientsComponent {
 
   @Output() recipes = new EventEmitter<any>();
 
-  constructor(private recipeService: RecipeService) {
-    afterRender(() => {
-      this.getAllIngredients();
-    });
+  constructor(private recipeService: RecipeService) {}
+
+  ngOnInit() {
+    this.getAllIngredients();
   }
 
   getAllIngredients() {
-    this.recipeService.httpIngredient().subscribe((res) => {
-      if (res.code == 'NG') {
-        return;
-      }
+    this.recipeService.httpIngredient().subscribe({
+      next: (res) => {
+        if (res.code == 'NG') {
+          return;
+        }
 
-      this.ingredientList = res.response['meals'];
+        this.ingredientList = res.response['meals'];
+      },
+      error: () => {
+        retry(1);
+      },
     });
   }
 
@@ -62,4 +60,6 @@ export class IngredientsComponent {
       this.recipes.emit(res);
     });
   }
+
+  removeIngredient(ingredient: string) {}
 }
