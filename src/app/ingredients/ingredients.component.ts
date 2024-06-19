@@ -11,6 +11,7 @@ import { Ingredients } from '../ingredient';
 import { RecipeService } from '../recipe.service';
 import { IngredientList } from '../ingredient-list';
 import { retry } from 'rxjs';
+import { env } from '../../../environment/environment.dev';
 
 @Component({
   selector: 'app-ingredients',
@@ -28,9 +29,7 @@ export class IngredientsComponent {
   ingredients: Array<string> = [];
   ingredientList: Array<IngredientList> = [];
   ingredient = new Ingredients('', '');
-  error = false;
-  errorMessage: string = '';
-  private readonly storage!: Storage;
+  error: string | undefined;
 
   @Output() recipes = new EventEmitter<string[]>();
 
@@ -57,14 +56,23 @@ export class IngredientsComponent {
   getAllIngredients() {
     this.recipeService.httpIngredient().subscribe({
       next: (res) => {
+        this.error = '';
         if (res.code == 'NG') {
+          this.error = res.message;
           return;
         }
 
         this.ingredientList = res.response['meals'];
       },
-      error: () => {
+      error: (err) => {
         retry(1);
+
+        if (err) {
+          this.error = env.errorMessages.server;
+        }
+      },
+      complete: () => {
+        this.error = '';
       },
     });
   }
