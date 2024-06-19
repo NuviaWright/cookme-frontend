@@ -43,7 +43,6 @@ export class RecipesComponent implements OnChanges {
     let ingredientName = ingredient[ingredient.length - 1].replace(' ', '_');
     this.recipeService.httpRecipe(ingredientName).subscribe({
       next: (res) => {
-        console.log(res);
         if (res?.code == 'NG') {
           this.error = res.message;
           return;

@@ -14,9 +14,9 @@
       id="ingredient"
       class="rounded-md border px-2 py-1 align-middle"
       [(ngModel)]="ingredient.name"
-      [ngModelOptions]="{ standalone: true }"
       name="name"
-      list="ingredient-name"
+      list=""
+      (keyup)="showDatalist($event)"
       required
     />
     <datalist id="ingredient-name">
@@ -26,17 +26,26 @@
       ></option>
     </datalist>
     <button
-      class="rounded bg-slate-400 text-white ms-4 px-3 py-1 hover:text-slate-950 hover:cursor-pointer"
+      class="rounded bg-slate-400 text-white ms-4 px-3 py-1 hover:text-slate-950 disabled:text-white disabled:bg-slate-300"
       type="submit"
       [disabled]="ingredient.name == ''"
     >
       Add
     </button>
     <button
-      class="mt-6 bg-slate-400 rounded px-3 py-1 text-white hover:text-slate-950"
+      class="mt-6 bg-slate-400 rounded px-3 py-1 text-white hover:text-slate-950 disabled:text-white disabled:bg-slate-300"
       (click)="clearAll()"
+      [disabled]="ingredients.length == 0"
     >
       Clear All
+    </button>
+
+    <button
+      class="mt-6 me-1 bg-green-500 rounded px-3 py-1 text-white hover:text-green-950 disabled:text-white disabled:cursor-default disabled:bg-green-300"
+      (click)="search()"
+      [disabled]="ingredients.length == 0"
+    >
+      Search
     </button>
   </div>
 </form>
@@ -44,7 +53,7 @@
 <div class="mt-5">
   <ul class="flex flex-row gap-4">
     <li
-      class="bg-orange-300 w-fit flex flex-row px-3 py-1 rounded justify-center align-middle gap-3"
+      class="bg-orange-300 w-fit flex flex-row px-3 py-1 rounded align-middle gap-3"
       *ngFor="let ingredient of ingredients"
     >
       <span class="text-slate-700">{{ ingredient }}</span>
@@ -65,12 +74,4 @@
       </button>
     </li>
   </ul>
-
-  <button
-    class="mt-6 me-1 bg-green-500 rounded px-3 py-1 text-white hover:text-green-950 disabled:text-white disabled:cursor-default disabled:bg-green-300"
-    (click)="search()"
-    [disabled]="ingredients.length == 0"
-  >
-    Search
-  </button>
 </div>
