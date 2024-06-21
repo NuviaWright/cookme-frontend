@@ -1,8 +1,16 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Inject,
+  Input,
+  OnChanges,
+  PLATFORM_ID,
+  SimpleChanges,
+} from '@angular/core';
 import { RecipeSearchRes } from '../recipe-search-res';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Meals } from '../meals';
 import { RouterLink } from '@angular/router';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipes',
@@ -12,24 +20,34 @@ import { RouterLink } from '@angular/router';
   styleUrl: './recipes.component.css',
 })
 export class RecipesComponent implements OnChanges {
-  @Input() recipesRes: RecipeSearchRes = {
-    response: [],
-    code: '',
-    message: '',
-  };
-
+  @Input() ingredient: string[] = [];
+  loading: boolean = false;
   meals: Meals[] = [];
   error: string = '';
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['recipesRes'].isFirstChange()) return;
+  constructor(private recipeService: RecipeService) {}
 
-    const res = changes['recipesRes'].currentValue;
-    if (res.code == 'NG') {
-      this.error = res.message;
+  ngOnChanges(changes: SimpleChanges): void {
+    const ingredient = changes['ingredient'].currentValue;
+
+    if (changes['ingredient'].isFirstChange()) return;
+    if (ingredient.length == 0) {
       return;
     }
 
-    this.meals = res.response['meals'];
+    this.loading = true;
+    this.meals = [];
+
+    // TO DO: change to multiple search
+    let ingredientName = ingredient[ingredient.length - 1].replace(' ', '_');
+    this.recipeService.httpRecipe(ingredientName).subscribe((res) => {
+      if (res?.code == 'NG') {
+        this.error = res.message;
+        return;
+      }
+
+      this.loading = false;
+      this.meals = res.response['meals'];
+    });
   }
 }

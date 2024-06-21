@@ -11,11 +11,13 @@ import { RecipeSearchRes } from '../recipe-search-res';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  recipes: RecipeSearchRes = {
-    response: [],
-    code: '',
-    message: '',
-  };
+  // recipes: RecipeSearchRes = {
+  //   response: [],
+  //   code: '',
+  //   message: '',
+  // };
+
+  recipes: string[] = [];
 
   onRecipes(res: any) {
     this.recipes = res;
