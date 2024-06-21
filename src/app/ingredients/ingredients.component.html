@@ -1,14 +1,32 @@
 <form (ngSubmit)="addIngredient()" #ingredientForm="ngForm">
-    <div class="flex flex-wrap justify-start gap-2 items-baseline">
-        <label for="ingredient">Ingredient: </label>
-        <input type="text" id="ingredient" class="rounded-md border px-2 py-1" [(ngModel)]="ingredient.name" [ngModelOptions]="{standalone: true}" name="name" required>
-        <button class="rounded bg-slate-400 text-white ms-4 px-3 py-1" type="submit" [disabled]="ingredient.name == ''">Add</button>
-    </div>
-    <input type="submit" value="">
+  <div class="flex flex-wrap justify-start gap-2 items-baseline">
+    <label for="ingredient">Ingredient: </label>
+    <input
+      type="text"
+      id="ingredient"
+      class="rounded-md border px-2 py-1"
+      [(ngModel)]="ingredient.name"
+      [ngModelOptions]="{ standalone: true }"
+      name="name"
+      required
+    />
+    <button
+      class="rounded bg-slate-400 text-white ms-4 px-3 py-1"
+      type="submit"
+      [disabled]="ingredient.name == ''"
+    >
+      Add
+    </button>
+  </div>
+  <input type="submit" value="" />
 </form>
 
+<div *ngIf="error" class="mt-5 bg-red-400 text-white w-fit p-5">
+  <p>{{ errorMessage }}</p>
+</div>
+
 <div class="mt-5">
-    <ul class="list-disc list-inside" *ngFor="let ingredient of ingredients">
-        <li>{{ingredient}}</li>
-    </ul>
+  <ul class="list-disc list-inside" *ngFor="let ingredient of ingredients">
+    <li>{{ ingredient }}</li>
+  </ul>
 </div>
