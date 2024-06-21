@@ -1,7 +1,5 @@
-import { RecipeRes } from './recipe-res';
-
 export interface RecipeSearchRes {
-  response: RecipeRes[];
+  response: any;
   message: string;
   code: string;
 }

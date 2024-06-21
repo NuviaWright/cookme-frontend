@@ -3,12 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { RecipeSearchRes } from './recipe-search-res';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Meals } from './meals';
+import { Food } from './food';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeService {
-  private url = 'http://localhost:8081/recipe/find';
+  private url = 'http://localhost:8081/recipe';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -25,7 +27,12 @@ export class RecipeService {
   }
 
   async fetchRecipe(ingredient: string): Promise<RecipeSearchRes | undefined> {
-    const res = await fetch(`${this.url}/${ingredient}`);
+    const res = await fetch(`${this.url}/find/${ingredient}`);
+    return (await res.json()) ?? '';
+  }
+
+  async fetchMeal(mealId: number): Promise<RecipeSearchRes | undefined> {
+    const res = await fetch(`${this.url}/meal/${mealId}`);
     return (await res.json()) ?? '';
   }
 

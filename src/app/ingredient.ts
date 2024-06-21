@@ -1,9 +1,7 @@
 export interface IngredientInterface {
-    name: string
+  name: string;
 }
 
 export class Ingredients {
-    constructor (
-        public name: string
-    ) {}
+  constructor(public name: string, public measure: string) {}
 }
