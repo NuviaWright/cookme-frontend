@@ -1,25 +1,19 @@
-import { Component } from '@angular/core';
-import { IngredientsComponent } from '../ingredients/ingredients.component';
-import { RecipesComponent } from '../recipes/recipes.component';
-import { RecipeSearchRes } from '../recipe-search-res';
+import { Component } from '@angular/core'
+import { IngredientsComponent } from '../ingredients/ingredients.component'
+import { RecipesComponent } from '../recipes/recipes.component'
+import { FilterComponent } from '../filter/filter.component'
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [IngredientsComponent, RecipesComponent],
+  imports: [IngredientsComponent, RecipesComponent, FilterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  // recipes: RecipeSearchRes = {
-  //   response: [],
-  //   code: '',
-  //   message: '',
-  // };
-
-  recipes: string[] = [];
+  recipes: string[] = []
 
   onRecipes(res: any) {
-    this.recipes = res;
+    this.recipes = res
   }
 }
