@@ -24,7 +24,6 @@ export class IngredientsComponent {
   addIngredient() {
     if (this.ingredient.name == '') return;
 
-    // const recipes = this.recipeService.recipeFind(this.ingredient.name);
     this.recipeService.fetchRecipe(this.ingredient.name).then((res) => {
       if (res?.code == 'NG') {
         this.error = true;
