@@ -4,12 +4,19 @@
     <input
       type="text"
       id="ingredient"
-      class="rounded-md border px-2 py-1"
+      class="rounded-md border px-2 py-1 align-middle"
       [(ngModel)]="ingredient.name"
       [ngModelOptions]="{ standalone: true }"
       name="name"
+      list="ingredient-name"
       required
     />
+    <datalist id="ingredient-name">
+      <option
+        *ngFor="let i of ingredientList"
+        [value]="i.strIngredient"
+      ></option>
+    </datalist>
     <button
       class="rounded bg-slate-400 text-white ms-4 px-3 py-1"
       type="submit"

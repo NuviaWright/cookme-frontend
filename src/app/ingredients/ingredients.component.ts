@@ -1,8 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ingredients } from '../ingredient';
 import { RecipeService } from '../recipe.service';
+import { IngredientList } from '../ingredient-list';
 
 @Component({
   selector: 'app-ingredients',
@@ -11,8 +12,9 @@ import { RecipeService } from '../recipe.service';
   templateUrl: './ingredients.component.html',
   styleUrl: './ingredients.component.css',
 })
-export class IngredientsComponent {
+export class IngredientsComponent implements OnInit {
   ingredients: Array<string> = [];
+  ingredientList: Array<IngredientList> = [];
   ingredient = new Ingredients('', '');
   error = false;
   errorMessage: string = '';
@@ -21,12 +23,22 @@ export class IngredientsComponent {
 
   constructor(private recipeService: RecipeService) {}
 
+  ngOnInit() {
+    this.recipeService.fetchIngredient().then((res) => {
+      if (res.code == 'NG') {
+        return;
+      }
+
+      this.ingredientList = res.response['meals'];
+    });
+  }
+
   addIngredient() {
     if (this.ingredient.name == '') return;
 
-    this.ingredient.name = this.ingredient.name.replace(' ', '_');
+    let ingredientName = this.ingredient.name.replace(' ', '_');
 
-    this.recipeService.fetchRecipe(this.ingredient.name).then((res) => {
+    this.recipeService.fetchRecipe(ingredientName).then((res) => {
       if (res?.code == 'NG') {
         this.error = true;
         this.errorMessage = res.message;
