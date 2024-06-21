@@ -1,17 +1,10 @@
-import {
-  Component,
-  Output,
-  EventEmitter,
-  PLATFORM_ID,
-  Inject,
-  ElementRef,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Ingredients } from '../ingredient';
-import { RecipeService } from '../recipe.service';
-import { IngredientList } from '../ingredient-list';
-import { retry } from 'rxjs';
+import { Component, Output, EventEmitter, PLATFORM_ID, Inject, ElementRef } from '@angular/core'
+import { FormsModule } from '@angular/forms'
+import { CommonModule, isPlatformBrowser } from '@angular/common'
+import { Ingredients } from '../ingredient'
+import { RecipeService } from '../recipe.service'
+import { IngredientList } from '../ingredient-list'
+import { retry } from 'rxjs'
 
 @Component({
   selector: 'app-ingredients',
@@ -26,12 +19,12 @@ TO DO:
  1. Multiple search of ingredients 
 */
 export class IngredientsComponent {
-  ingredients: Array<string> = [];
-  ingredientList: Array<IngredientList> = [];
-  ingredient = new Ingredients('', '');
-  error: string | undefined;
+  ingredients: Array<string> = []
+  ingredientList: Array<IngredientList> = []
+  ingredient = new Ingredients('', '')
+  error: string | undefined
 
-  @Output() recipes = new EventEmitter<string[]>();
+  @Output() recipes = new EventEmitter<string[]>()
 
   constructor(
     private recipeService: RecipeService,
@@ -40,16 +33,14 @@ export class IngredientsComponent {
   ) {}
 
   ngOnInit() {
-    this.getAllIngredients();
+    this.getAllIngredients()
 
     if (isPlatformBrowser(this.platformId)) {
-      const storedIngredients = localStorage
-        .getItem('cookMe_ingredients')
-        ?.split(',');
+      const storedIngredients = localStorage.getItem('cookMe_ingredients')?.split(',')
 
       if (storedIngredients && storedIngredients.length > 0) {
-        this.ingredients = storedIngredients;
-        this.search();
+        this.ingredients = storedIngredients
+        this.search()
       }
     }
   }
@@ -59,74 +50,67 @@ export class IngredientsComponent {
 
     this.recipeService.httpIngredient().subscribe({
       next: (res) => {
-        this.error = '';
+        this.error = ''
         if (res.code == 'NG') {
-          this.error = res.message;
-          return;
+          this.error = res.message
+          return
         }
 
-        this.error = '';
-        this.ingredientList = res.response['meals'];
+        this.error = ''
+        this.ingredientList = res.response['meals']
       },
       error: () => {
-        retry(1);
+        retry(1)
       },
       complete: () => {
-        this.error = '';
+        this.error = ''
       },
-    });
+    })
   }
 
   addIngredient() {
-    if (this.ingredient.name == '') return;
+    if (this.ingredient.name == '') return
 
-    this.ingredients.push(this.ingredient.name);
-    this.ingredient.name = '';
-    this.elementRef.nativeElement
-      .querySelector('#ingredient')
-      .setAttribute('list', '');
+    this.ingredients.push(this.ingredient.name)
+    this.ingredient.name = ''
+    this.elementRef.nativeElement.querySelector('#ingredient').setAttribute('list', '')
 
-    localStorage.setItem('cookMe_ingredients', this.ingredients.toString());
+    localStorage.setItem('cookMe_ingredients', this.ingredients.toString())
   }
 
   showDatalist(e: any) {
-    if (e.which <= 90 && e.which <= 48) return;
-    if (e.which == 13) return;
+    if (e.which <= 90 && e.which <= 48) return
+    if (e.which == 13) return
 
-    this.elementRef.nativeElement
-      .querySelector('#ingredient')
-      .setAttribute('list', 'ingredient-name');
+    this.elementRef.nativeElement.querySelector('#ingredient').setAttribute('list', 'ingredient-name')
   }
 
   removeIngredient(ingredient: string) {
     this.ingredients.filter((value, index) => {
       if (value === ingredient) {
-        const indexRemove = index;
-        this.ingredients.splice(indexRemove, 1);
+        const indexRemove = index
+        this.ingredients.splice(indexRemove, 1)
 
         if (this.ingredients.length == 0) {
-          localStorage.clear();
+          localStorage.clear()
         } else {
-          localStorage.setItem(
-            'cookMe_ingredients',
-            this.ingredients.toString()
-          );
+          localStorage.setItem('cookMe_ingredients', this.ingredients.toString())
         }
-        return true;
+        return true
       }
 
-      return false;
-    });
+      return false
+    })
   }
 
   search() {
-    this.ingredients = this.ingredients.slice();
-    this.recipes.emit(this.ingredients);
+    this.ingredients = this.ingredients.slice()
+    this.recipes.emit(this.ingredients)
   }
 
   clearAll() {
-    this.ingredients = [];
-    this.ingredientList = [];
-    localStorage.removeItem('cookMe_ingredients');
+    this.ingredients = []
+    this.ingredientList = []
+    localStorage.removeItem('cookMe_ingredients')
   }
 }
