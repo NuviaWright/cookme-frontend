@@ -4,6 +4,7 @@ import {
   EventEmitter,
   PLATFORM_ID,
   Inject,
+  ElementRef,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -11,7 +12,6 @@ import { Ingredients } from '../ingredient';
 import { RecipeService } from '../recipe.service';
 import { IngredientList } from '../ingredient-list';
 import { retry } from 'rxjs';
-import { env } from '../../../environment/environment.dev';
 
 @Component({
   selector: 'app-ingredients',
@@ -35,7 +35,8 @@ export class IngredientsComponent {
 
   constructor(
     private recipeService: RecipeService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private elementRef: ElementRef
   ) {}
 
   ngOnInit() {
@@ -54,6 +55,8 @@ export class IngredientsComponent {
   }
 
   getAllIngredients() {
+    // if (this.ingredient.name == '') return;
+
     this.recipeService.httpIngredient().subscribe({
       next: (res) => {
         this.error = '';
@@ -62,14 +65,11 @@ export class IngredientsComponent {
           return;
         }
 
+        this.error = '';
         this.ingredientList = res.response['meals'];
       },
-      error: (err) => {
+      error: () => {
         retry(1);
-
-        if (err) {
-          this.error = env.errorMessages.server;
-        }
       },
       complete: () => {
         this.error = '';
@@ -82,8 +82,20 @@ export class IngredientsComponent {
 
     this.ingredients.push(this.ingredient.name);
     this.ingredient.name = '';
+    this.elementRef.nativeElement
+      .querySelector('#ingredient')
+      .setAttribute('list', '');
 
     localStorage.setItem('cookMe_ingredients', this.ingredients.toString());
+  }
+
+  showDatalist(e: any) {
+    if (e.which <= 90 && e.which <= 48) return;
+    if (e.which == 13) return;
+
+    this.elementRef.nativeElement
+      .querySelector('#ingredient')
+      .setAttribute('list', 'ingredient-name');
   }
 
   removeIngredient(ingredient: string) {
@@ -114,6 +126,7 @@ export class IngredientsComponent {
 
   clearAll() {
     this.ingredients = [];
+    this.ingredientList = [];
     localStorage.removeItem('cookMe_ingredients');
   }
 }
