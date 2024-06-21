@@ -1,14 +1,11 @@
 <nav class="bg-slate-600 w-100 h-14 align-middle">
   <div class="">
-    <h1 class="text-4xl text-white font-bold ms-5">{{title}}</h1>
+    <h1 class="text-4xl text-white font-bold ms-5">{{ title }}</h1>
   </div>
 </nav>
-<div class="ms-10">
-  <div class="mt-10">
+<main class="grid grid-cols-3 ms-10">
+  <div class="mt-10 col-span-3">
     <app-ingredients></app-ingredients>
   </div>
-  <div class="mt-10">
-    <app-recipes></app-recipes>
-  </div>
-</div>
-
+  <app-recipes class="mt-10 col-span-2"></app-recipes>
+</main>
