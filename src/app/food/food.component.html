@@ -33,7 +33,7 @@
     <p class="ml-5 whitespace-pre-line">
       {{ food?.strInstructions }}
     </p>
-    <div class="mt-1">
+    <div class="mt-1" *ngIf="food?.strYoutube">
       <span class="font-semibold">Video tutorial: </span>
       <a
         [href]="food?.strYoutube"
@@ -43,7 +43,7 @@
       >
     </div>
 
-    <div *ngIf="food?.strSource != null" class="mt-1">
+    <div *ngIf="food?.strSource" class="mt-1">
       <h1 class="font-semibold">
         For more info about this recipe, check out this
         <a
