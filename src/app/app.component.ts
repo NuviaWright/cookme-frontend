@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import { RecipesComponent } from './recipes/recipes.component';
+import { RecipeSearchRes } from './recipe-search-res';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,13 @@ import { RecipesComponent } from './recipes/recipes.component';
 })
 export class AppComponent {
   title = 'CookMe';
+  recipes: RecipeSearchRes = {
+    response: [],
+    code: '',
+    message: '',
+  };
+
+  onRecipes(res: any) {
+    this.recipes = res;
+  }
 }

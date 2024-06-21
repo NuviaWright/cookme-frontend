@@ -1,7 +1,7 @@
 import { RecipeRes } from './recipe-res';
 
 export interface RecipeSearchRes {
-  object: RecipeRes[];
+  response: RecipeRes[];
   message: string;
   code: string;
 }
