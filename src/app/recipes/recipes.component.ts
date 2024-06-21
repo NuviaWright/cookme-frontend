@@ -6,11 +6,12 @@ import {
   PLATFORM_ID,
   SimpleChanges,
 } from '@angular/core';
-import { RecipeSearchRes } from '../recipe-search-res';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Meals } from '../meals';
 import { RouterLink } from '@angular/router';
 import { RecipeService } from '../recipe.service';
+import { retry } from 'rxjs';
+import { env } from '../../../environment/environment.dev';
 
 @Component({
   selector: 'app-recipes',
@@ -40,15 +41,28 @@ export class RecipesComponent implements OnChanges {
 
     // TO DO: change to multiple search
     let ingredientName = ingredient[ingredient.length - 1].replace(' ', '_');
-    this.recipeService.httpRecipe(ingredientName).subscribe((res) => {
-      console.log(res);
-      if (res?.code == 'NG') {
-        this.error = res.message;
-        return;
-      }
+    this.recipeService.httpRecipe(ingredientName).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res?.code == 'NG') {
+          this.error = res.message;
+          return;
+        }
 
-      this.loading = false;
-      this.meals = res.response['meals'] != null ? res.response['meals'] : [];
+        this.loading = false;
+        this.meals = res.response['meals'] != null ? res.response['meals'] : [];
+      },
+      error: (err) => {
+        retry(1);
+
+        if (err) {
+          this.error = env.errorMessages.server;
+          this.loading = false;
+        }
+      },
+      complete: () => {
+        this.error = '';
+      },
     });
   }
 }
