@@ -24,6 +24,8 @@ export class IngredientsComponent {
   addIngredient() {
     if (this.ingredient.name == '') return;
 
+    this.ingredient.name = this.ingredient.name.replace(' ', '_');
+
     this.recipeService.fetchRecipe(this.ingredient.name).then((res) => {
       if (res?.code == 'NG') {
         this.error = true;
