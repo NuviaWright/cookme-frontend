@@ -27,6 +27,12 @@
     >
       Add
     </button>
+    <button
+      class="mt-6 bg-slate-400 rounded px-3 py-1 text-white hover:text-slate-950"
+      (click)="clearAll()"
+    >
+      Clear All
+    </button>
   </div>
 </form>
 
@@ -60,7 +66,7 @@
   </ul>
 
   <button
-    class="mt-6 bg-green-500 rounded px-3 py-1 text-white hover:text-green-950 disabled:text-white disabled:cursor-default disabled:bg-green-300"
+    class="mt-6 me-1 bg-green-500 rounded px-3 py-1 text-white hover:text-green-950 disabled:text-white disabled:cursor-default disabled:bg-green-300"
     (click)="search()"
     [disabled]="ingredients.length == 0"
   >
