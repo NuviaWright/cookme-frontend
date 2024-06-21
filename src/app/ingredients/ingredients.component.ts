@@ -23,8 +23,6 @@ import { retry } from 'rxjs';
 /*
 TO DO:
  1. Multiple search of ingredients 
- 2. Update list of meals when an ingredients remove
- 3. Remove search of meals when clicking Add button
 */
 export class IngredientsComponent {
   ingredients: Array<string> = [];
