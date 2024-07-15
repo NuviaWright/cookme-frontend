@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RecipeSearchRes } from './recipe-search-res';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { RecipeSearchRes } from './recipe-search-res'
+import { Observable } from 'rxjs'
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeService {
-  private urlRecipe = 'http://127.0.0.1:8081/recipe';
-  private urlIngredient = 'http://127.0.0.1:8081/ingredient';
+  private urlRecipe = 'http://127.0.0.1:8081/recipe'
+  private urlIngredient = 'http://127.0.0.1:8081/ingredient'
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -23,14 +23,16 @@ export class RecipeService {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-    });
-    return (await res.json()) ?? '';
+    })
+    return (await res.json()) ?? ''
   }
 
   httpRecipe(ingredient: string): Observable<RecipeSearchRes> {
-    return this.http.get<RecipeSearchRes>(
-      `${this.urlRecipe}/find/${ingredient}`
-    );
+    return this.http.get<RecipeSearchRes>(`${this.urlRecipe}/find/${ingredient}`)
+  }
+
+  httpPaginatedRecipe(ingredient: string, page: number, size: number) {
+    return this.http.get<RecipeSearchRes>(`${this.urlRecipe}/find/page/${ingredient}?page=${page}&size=${size}`)
   }
 
   async fetchMeal(mealId: number): Promise<RecipeSearchRes> {
@@ -40,12 +42,12 @@ export class RecipeService {
         'Access-Control-Allow-Origin': '*',
         accept: 'application/json',
       },
-    });
-    return (await res.json()) ?? '';
+    })
+    return (await res.json()) ?? ''
   }
 
   httpMeal(mealId: number): Observable<RecipeSearchRes> {
-    return this.http.get<RecipeSearchRes>(`${this.urlRecipe}/meal/${mealId}`);
+    return this.http.get<RecipeSearchRes>(`${this.urlRecipe}/meal/${mealId}`)
   }
 
   async fetchIngredient(): Promise<RecipeSearchRes> {
@@ -55,11 +57,11 @@ export class RecipeService {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-    });
-    return (await res.json()) ?? '';
+    })
+    return (await res.json()) ?? ''
   }
 
   httpIngredient(): Observable<RecipeSearchRes> {
-    return this.http.get<RecipeSearchRes>(`${this.urlIngredient}/list`);
+    return this.http.get<RecipeSearchRes>(`${this.urlIngredient}/list`)
   }
 }
